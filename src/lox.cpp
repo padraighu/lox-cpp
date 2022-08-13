@@ -46,7 +46,7 @@ void Lox::run(std::string source)
               << std::endl;
     std::cout << source << std::endl;
 
-    Scanner scanner(source);
+    Scanner scanner(source, *this);
     auto tokens = scanner.scanTokens();
     std::cout << "Number of tokens scanned: " << tokens.size() << std::endl;
 
@@ -64,5 +64,5 @@ void Lox::error(int line, std::string message)
 void Lox::report(int line, std::string where, std::string message)
 {
     std::cerr << "[line " << line << "] Error" << where << ": " << message << std::endl;
-    // this->hadError = true; TODO
+    this->hadError = true;
 }

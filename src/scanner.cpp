@@ -6,9 +6,10 @@
 #include <string>
 #include <unordered_map>
 
-Scanner::Scanner(std::string source)
+Scanner::Scanner(std::string source, Lox &lox)
 {
     this->source = source;
+    this->loxCtx = lox;
     keywords.insert(std::pair<std::string, TokenType>("and", AND));
     keywords.insert(std::pair<std::string, TokenType>("class", CLASS));
     keywords.insert(std::pair<std::string, TokenType>("else", ELSE));
@@ -130,7 +131,7 @@ void Scanner::scanToken()
         }
         else
         {
-            // TODO Lox.error(line, "Unexpected character.");
+            loxCtx.error(line, "Unexpected character.");
         }
         break;
     }
@@ -182,7 +183,7 @@ void Scanner::string()
 
     if (isAtEnd())
     {
-        //  TODO Lox.error(line, "Unterminated string.");
+        loxCtx.error(line, "Unterminated string.");
         return;
     }
 

@@ -5,6 +5,7 @@
 #include "token.hpp"
 #include "tokentype.hpp"
 #include "literal.hpp"
+#include "lox.hpp"
 
 class Scanner
 {
@@ -14,9 +15,10 @@ class Scanner
     int current = 0;
     int line = 1;
     std::unordered_map<std::string, TokenType> keywords = std::unordered_map<std::string, TokenType>();
+    Lox loxCtx;
 
 public:
-    Scanner(std::string source);
+    Scanner(std::string source, Lox &lox);
     std::vector<Token> scanTokens();
 
     bool isAtEnd();

@@ -14,8 +14,7 @@ public:
 
     void run(std::string source); // TODO can this be private
 
-    static void error(int line, std::string message);
+    void error(int line, std::string message);
 
-    // TODO can this be static
-    static void report(int line, std::string where, std::string message);
+    void report(int line, std::string where, std::string message);
 };
