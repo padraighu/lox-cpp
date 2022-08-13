@@ -35,7 +35,7 @@ std::vector<Token> Scanner::scanTokens()
         scanToken();
     }
 
-    auto tok = Token(LEOF, "", Literal::makeNullLiteral(), line);
+    auto tok = Token(LEOF, "", LiteralValue::makeNullLiteral(), line);
     tokens.push_back(tok);
     return tokens;
 }
@@ -143,10 +143,10 @@ char Scanner::advance()
 
 void Scanner::addToken(TokenType type)
 {
-    addToken(type, Literal::makeNullLiteral());
+    addToken(type, LiteralValue::makeNullLiteral());
 }
 
-void Scanner::addToken(TokenType type, Literal literal)
+void Scanner::addToken(TokenType type, LiteralValue literal)
 {
     std::string text = source.substr(start, current - start);
     auto tok = Token(type, text, literal, line);
@@ -191,7 +191,7 @@ void Scanner::string()
 
     // Trim the surrounding quotes.
     auto value = source.substr(start + 1, current - start - 1);
-    auto stringLiteral = Literal::makeStringLiteral(value);
+    auto stringLiteral = LiteralValue::makeStringLiteral(value);
     addToken(STRING, stringLiteral);
 }
 
@@ -217,7 +217,7 @@ void Scanner::number()
 
     auto valueStr = source.substr(start, current - start);
     auto value = std::stod(valueStr);
-    auto numberLiteral = Literal::makeNumberLiteral(value);
+    auto numberLiteral = LiteralValue::makeNumberLiteral(value);
     addToken(NUMBER, numberLiteral);
 }
 

@@ -23,7 +23,7 @@ public:
     void scanToken();
     char advance();
     void addToken(TokenType);
-    void addToken(TokenType, Literal);
+    void addToken(TokenType, LiteralValue);
     bool match(char);
     char peek();
     void string();

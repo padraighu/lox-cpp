@@ -3,62 +3,62 @@
 #include "literal.hpp"
 #include "literaltype.hpp"
 
-Literal::Literal(LiteralType type, std::string value)
+LiteralValue::LiteralValue(LiteralType type, std::string value)
 {
     this->type = type;
     this->value = value;
 }
 
-bool Literal::isString()
+bool LiteralValue::isString()
 {
     return type == STRING_LITERAL;
 }
 
-bool Literal::isNumber()
+bool LiteralValue::isNumber()
 {
     return type == NUMBER_LITERAL;
 }
 
-bool Literal::isIdentifier()
+bool LiteralValue::isIdentifier()
 {
     return type == IDENTIFIER_LITERAL;
 }
 
-bool Literal::isNull()
+bool LiteralValue::isNull()
 {
     return type == NULL_LITERAL;
 }
 
-std::string Literal::getStringValue()
+std::string LiteralValue::getStringValue()
 {
     if (isString())
         return value;
     return "ERROR";
 }
 
-double Literal::getNumberValue()
+double LiteralValue::getNumberValue()
 {
     if (isNumber())
         return std::stod(value);
     return -1.0;
 }
 
-Literal Literal::makeStringLiteral(std::string value)
+LiteralValue LiteralValue::makeStringLiteral(std::string value)
 {
-    return Literal(STRING_LITERAL, value);
+    return LiteralValue(STRING_LITERAL, value);
 }
 
-Literal Literal::makeNumberLiteral(double value)
+LiteralValue LiteralValue::makeNumberLiteral(double value)
 {
-    return Literal(NUMBER_LITERAL, std::to_string(value));
+    return LiteralValue(NUMBER_LITERAL, std::to_string(value));
 }
 
-Literal Literal::makeNullLiteral()
+LiteralValue LiteralValue::makeNullLiteral()
 {
-    return Literal(NULL_LITERAL, "NULL_LITERAL");
+    return LiteralValue(NULL_LITERAL, "NULL_LITERAL");
 }
 
-std::ostream &operator<<(std::ostream &os, const Literal &l)
+std::ostream &operator<<(std::ostream &os, const LiteralValue &l)
 {
     os << l.value;
     return os;

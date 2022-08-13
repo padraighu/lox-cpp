@@ -3,11 +3,11 @@
 #include <string>
 #include "literaltype.hpp"
 
-class Literal
+class LiteralValue
 {
     LiteralType type;
     std::string value;
-    Literal(LiteralType, std::string);
+    LiteralValue(LiteralType, std::string);
 
 public:
     bool isString();
@@ -16,9 +16,9 @@ public:
     bool isNull();
     std::string getStringValue();
     double getNumberValue();
-    static Literal makeStringLiteral(std::string);
-    static Literal makeNumberLiteral(double);
-    static Literal makeNullLiteral();
+    static LiteralValue makeStringLiteral(std::string);
+    static LiteralValue makeNumberLiteral(double);
+    static LiteralValue makeNullLiteral();
 
-    friend std::ostream &operator<<(std::ostream &os, const Literal &t);
+    friend std::ostream &operator<<(std::ostream &os, const LiteralValue &t);
 };
