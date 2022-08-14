@@ -3,11 +3,13 @@
 #include <iostream>
 #include "tokentype.hpp"
 #include "scanner.hpp"
+#include "lox.hpp"
 
 TEST(ScannerTest, TestBasic)
 {
+    Lox lox;
     std::string testLox = "print 123;";
-    Scanner scanner(testLox);
+    Scanner scanner(testLox, lox);
     auto tokens = scanner.scanTokens();
     EXPECT_EQ(tokens.size(), 4);
     EXPECT_EQ(tokens[0].lexeme, "print");
