@@ -2,10 +2,11 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <memory>
 #include "token.hpp"
 #include "tokentype.hpp"
 #include "literal.hpp"
-#include "lox.hpp"
+#include "errorreporter.hpp"
 
 class Scanner
 {
@@ -15,10 +16,10 @@ class Scanner
     int current = 0;
     int line = 1;
     std::unordered_map<std::string, TokenType> keywords = std::unordered_map<std::string, TokenType>();
-    Lox loxCtx;
+    std::shared_ptr<ErrorReporter> errorReporter;
 
 public:
-    Scanner(std::string source, Lox &lox);
+    Scanner(std::string source, std::shared_ptr<ErrorReporter> errorReporter);
     std::vector<Token> scanTokens();
 
     bool isAtEnd();

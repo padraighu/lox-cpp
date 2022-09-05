@@ -2,14 +2,15 @@
 #include "token.hpp"
 #include "tokentype.hpp"
 #include "literal.hpp"
-#include "lox.hpp"
+#include "errorreporter.hpp"
 #include <string>
 #include <unordered_map>
+#include <memory>
 
-Scanner::Scanner(std::string source, Lox &lox)
+Scanner::Scanner(std::string source, std::shared_ptr<ErrorReporter> errorReporter)
 {
     this->source = source;
-    this->loxCtx = lox;
+    this->errorReporter = errorReporter;
     keywords.insert(std::pair<std::string, TokenType>("and", AND));
     keywords.insert(std::pair<std::string, TokenType>("class", CLASS));
     keywords.insert(std::pair<std::string, TokenType>("else", ELSE));
@@ -131,7 +132,7 @@ void Scanner::scanToken()
         }
         else
         {
-            loxCtx.error(line, "Unexpected character.");
+            errorReporter->error(line, "Unexpected character.");
         }
         break;
     }
@@ -183,7 +184,7 @@ void Scanner::string()
 
     if (isAtEnd())
     {
-        loxCtx.error(line, "Unterminated string.");
+        errorReporter->error(line, "Unterminated string.");
         return;
     }
 

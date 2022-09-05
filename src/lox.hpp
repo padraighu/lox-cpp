@@ -1,20 +1,18 @@
 #pragma once
+#include "errorreporter.hpp"
+#include <memory>
 #include <string>
 
 class Lox
 {
 public:
-    bool hadError;
+    std::shared_ptr<ErrorReporter> errorReporter;
 
-    Lox();
+    Lox(std::shared_ptr<ErrorReporter> errorReporter);
 
     int runFile(char *path);
 
     void runPrompt();
 
     void run(std::string source); // TODO can this be private
-
-    void error(int line, std::string message);
-
-    void report(int line, std::string where, std::string message);
 };
