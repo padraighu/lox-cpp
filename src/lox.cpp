@@ -7,6 +7,9 @@
 #include "lox.hpp"
 #include "scanner.hpp"
 #include "errorreporter.hpp"
+#include "parser.hpp"
+#include "expr.hpp"
+#include "astprinter.hpp"
 
 Lox::Lox(std::shared_ptr<ErrorReporter> errorReporter)
 {
@@ -50,10 +53,10 @@ void Lox::run(std::string source)
 
     Scanner scanner(source, errorReporter);
     auto tokens = scanner.scanTokens();
-    std::cout << "Number of tokens scanned: " << tokens.size() << std::endl;
-
-    for (auto token : tokens)
-    {
-        std::cout << token << std::endl;
-    }
+    Parser parser(tokens);
+    auto expression = parser.parse();
+    AstPrinter printer;
+    auto result = printer.print(expression);
+    std::cout << "AstPrinter output:" << std::endl;
+    std::cout << result << std::endl;
 }
