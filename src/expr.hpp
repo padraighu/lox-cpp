@@ -9,6 +9,7 @@ class Expr
 {
 public:
     virtual std::any accept(Visitor& visitor) = 0;
+virtual ~Expr() = default;
 };
 
 class Binary : public Expr

@@ -79,6 +79,7 @@ def define_ast_header(output_dir: str, base_name: str, types: list):
     content += "{\n"
     content += "public:\n"
     content += "    virtual std::any accept(Visitor& visitor) = 0;\n"
+    content += "virtual ~Expr() = default;\n"
     content += "};\n\n"
 
     for type in types:
