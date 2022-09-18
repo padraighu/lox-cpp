@@ -72,7 +72,7 @@ std::any Interpreter::evaluate(std::shared_ptr<Expr> expr)
 bool Interpreter::isTruthy(LiteralValue val)
 {
     if (val.isNull()) return false;
-//    if (val.isString()) return ; // TODO implement bool type
+    if (val.isBoolean()) return val.getBooleanValue();
     return true;
 }
 
