@@ -10,6 +10,7 @@
 #include "parser.hpp"
 #include "expr.hpp"
 #include "astprinter.hpp"
+#include "interpreter.hpp"
 
 Lox::Lox(std::shared_ptr<ErrorReporter> errorReporter)
 {
@@ -59,4 +60,6 @@ void Lox::run(std::string source)
     auto result = printer.print(expression);
     std::cout << "AstPrinter output:" << std::endl;
     std::cout << result << std::endl;
+    Interpreter interpreter;
+    interpreter.interpret(expression);
 }
