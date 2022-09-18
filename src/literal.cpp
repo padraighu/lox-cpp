@@ -29,6 +29,11 @@ bool LiteralValue::isNull()
     return type == NULL_LITERAL;
 }
 
+bool LiteralValue::isBoolean()
+{
+    return type == BOOLEAN_LITERAL;
+}
+
 std::string LiteralValue::getStringValue()
 {
     if (isString())
@@ -41,6 +46,16 @@ double LiteralValue::getNumberValue()
     if (isNumber())
         return std::stod(value);
     return -1.0;
+}
+
+bool LiteralValue::getBooleanValue()
+{
+    if (isBoolean())
+    {
+        if (value == "true") return true;
+        if (value == "false") return false;
+    }
+    return false;
 }
 
 LiteralValue LiteralValue::makeStringLiteral(std::string value)
@@ -56,6 +71,12 @@ LiteralValue LiteralValue::makeNumberLiteral(double value)
 LiteralValue LiteralValue::makeNullLiteral()
 {
     return LiteralValue(NULL_LITERAL, "NULL_LITERAL");
+}
+
+LiteralValue LiteralValue::makeBooleanLiteral(bool value)
+{
+    std::string strVal = value ? "true" : "false";
+    return LiteralValue(BOOLEAN_LITERAL, strVal);
 }
 
 std::ostream &operator<<(std::ostream &os, const LiteralValue &l)
