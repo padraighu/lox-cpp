@@ -80,9 +80,8 @@ std::shared_ptr<Expr> Parser::unary()
 
 std::shared_ptr<Expr> Parser::primary()
 {
-    // TODO create false and true literal values
-    if (match({TokenType::FALSE})) return std::make_shared<Literal>(LiteralValue::makeNullLiteral());
-    if (match({TokenType::TRUE})) return std::make_shared<Literal>(LiteralValue::makeNullLiteral());
+    if (match({TokenType::FALSE})) return std::make_shared<Literal>(LiteralValue::makeBooleanLiteral(false));
+    if (match({TokenType::TRUE})) return std::make_shared<Literal>(LiteralValue::makeBooleanLiteral(true));
     if (match({TokenType::NIL})) return std::make_shared<Literal>(LiteralValue::makeNullLiteral());
 
     if (match({TokenType::NUMBER, TokenType::STRING}))
