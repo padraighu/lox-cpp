@@ -17,15 +17,15 @@ private:
     std::shared_ptr<Expr> factor();
     std::shared_ptr<Expr> unary();
     std::shared_ptr<Expr> primary();
-    bool match(std::vector<TokenType> types);
+    bool match(const std::vector<TokenType>& types);
     bool check(TokenType type);
     Token advance();
     bool isAtEnd();
     Token peek();
     Token previous();
-    Token consume(TokenType type, std::string message);
+    Token consume(TokenType type, const std::string& message);
 
 public:
-    Parser(std::vector<Token> tokens);
+    explicit Parser(std::vector<Token> tokens);
     std::shared_ptr<Expr> parse();
 };

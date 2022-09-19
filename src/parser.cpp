@@ -1,4 +1,5 @@
 #include <memory>
+#include <utility>
 #include <vector>
 #include <iostream>
 #include "parser.hpp"
@@ -9,7 +10,7 @@
 
 Parser::Parser(std::vector<Token> tokens)
 {
-    this->tokens = tokens;
+    this->tokens = std::move(tokens);
 }
 
 std::shared_ptr<Expr> Parser::expression()
@@ -105,7 +106,7 @@ std::shared_ptr<Expr> Parser::parse()
     return expression();
 }
 
-bool Parser::match(std::vector<TokenType> types)
+bool Parser::match(const std::vector<TokenType>& types)
 {
     for (const auto t: types)
     {
@@ -145,7 +146,7 @@ Token Parser::previous()
     return tokens[current - 1];
 }
 
-Token Parser::consume(TokenType type, std::string message)
+Token Parser::consume(TokenType type, const std::string& message)
 {
     if (check(type)) return advance();
 

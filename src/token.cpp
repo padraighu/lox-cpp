@@ -1,4 +1,5 @@
 #include <iostream>
+#include <utility>
 #include "token.hpp"
 #include "literal.hpp"
 #include "tokentype.hpp"
@@ -6,8 +7,8 @@
 Token::Token(TokenType type, std::string lexeme, LiteralValue literal, int line)
 {
     this->type = type;
-    this->lexeme = lexeme;
-    this->literal = literal;
+    this->lexeme = std::move(lexeme);
+    this->literal = std::move(literal);
     this->line = line;
 }
 

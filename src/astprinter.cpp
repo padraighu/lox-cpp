@@ -7,7 +7,7 @@
 
 // Borrowed heavily from https://github.com/the-lambda-way/CppLox/blob/master/chapter5
 
-std::string AstPrinter::print(std::shared_ptr<Expr> expr)
+std::string AstPrinter::print(const std::shared_ptr<Expr>& expr)
 {
     return std::any_cast<std::string>(expr->accept(*this));
 }
@@ -40,7 +40,7 @@ std::any AstPrinter::visitUnaryExpr(Unary expr)
 }
 
 
-std::string AstPrinter::parenthize(std::string name, std::vector<std::shared_ptr<Expr>> expr)
+std::string AstPrinter::parenthize(const std::string& name, const std::vector<std::shared_ptr<Expr>>& expr)
 {
     std::string result = "(" + name;
     // https://stackoverflow.com/questions/7230621/how-can-i-iterate-over-a-packed-variadic-template-argument-list

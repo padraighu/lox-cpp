@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 #include <memory>
 #include "lox.hpp"
@@ -14,7 +15,7 @@
 
 Lox::Lox(std::shared_ptr<ErrorReporter> errorReporter)
 {
-    this->errorReporter = errorReporter;
+    this->errorReporter = std::move(errorReporter);
 }
 
 int Lox::runFile(char *path)
@@ -46,7 +47,7 @@ void Lox::runPrompt()
     }
 }
 
-void Lox::run(std::string source)
+void Lox::run(const std::string& source)
 {
     std::cout << "Running the following lox:" << std::endl
               << std::endl;

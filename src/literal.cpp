@@ -1,12 +1,13 @@
 #include <ostream>
 #include <string>
+#include <utility>
 #include "literal.hpp"
 #include "literaltype.hpp"
 
 LiteralValue::LiteralValue(LiteralType type, std::string value)
 {
     this->type = type;
-    this->value = value;
+    this->value = std::move(value);
 }
 
 bool LiteralValue::isString()
@@ -60,23 +61,23 @@ bool LiteralValue::getBooleanValue()
 
 LiteralValue LiteralValue::makeStringLiteral(std::string value)
 {
-    return LiteralValue(STRING_LITERAL, value);
+    return {STRING_LITERAL, std::move(value)};
 }
 
 LiteralValue LiteralValue::makeNumberLiteral(double value)
 {
-    return LiteralValue(NUMBER_LITERAL, std::to_string(value));
+    return {NUMBER_LITERAL, std::to_string(value)};
 }
 
 LiteralValue LiteralValue::makeNullLiteral()
 {
-    return LiteralValue(NULL_LITERAL, "NULL_LITERAL");
+    return {NULL_LITERAL, "NULL_LITERAL"};
 }
 
 LiteralValue LiteralValue::makeBooleanLiteral(bool value)
 {
     std::string strVal = value ? "true" : "false";
-    return LiteralValue(BOOLEAN_LITERAL, strVal);
+    return {BOOLEAN_LITERAL, strVal};
 }
 
 std::ostream &operator<<(std::ostream &os, const LiteralValue &l)

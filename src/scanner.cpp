@@ -4,13 +4,13 @@
 #include "literal.hpp"
 #include "errorreporter.hpp"
 #include <string>
-#include <unordered_map>
 #include <memory>
+#include <utility>
 
 Scanner::Scanner(std::string source, std::shared_ptr<ErrorReporter> errorReporter)
 {
-    this->source = source;
-    this->errorReporter = errorReporter;
+    this->source = std::move(source);
+    this->errorReporter = std::move(errorReporter);
     keywords.insert(std::pair<std::string, TokenType>("and", AND));
     keywords.insert(std::pair<std::string, TokenType>("class", CLASS));
     keywords.insert(std::pair<std::string, TokenType>("else", ELSE));
@@ -151,7 +151,7 @@ void Scanner::addToken(TokenType type)
 void Scanner::addToken(TokenType type, LiteralValue literal)
 {
     std::string text = source.substr(start, current - start);
-    auto tok = Token(type, text, literal, line);
+    auto tok = Token(type, text, std::move(literal), line);
     tokens.push_back(tok);
 }
 

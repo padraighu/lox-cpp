@@ -1,10 +1,11 @@
 #include <memory>
 #include <any>
+#include <utility>
 #include "expr.hpp"
 
-Binary::Binary(std::shared_ptr<Expr> left, Token op, std::shared_ptr<Expr> right) : op(op) {
-    this->left = left;
-    this->right = right;
+Binary::Binary(std::shared_ptr<Expr> left, Token op, std::shared_ptr<Expr> right) : op(std::move(op)) {
+    this->left = std::move(left);
+    this->right = std::move(right);
 }
 std::any Binary::accept(Visitor& visitor)
 {

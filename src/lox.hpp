@@ -8,11 +8,11 @@ class Lox
 public:
     std::shared_ptr<ErrorReporter> errorReporter;
 
-    Lox(std::shared_ptr<ErrorReporter> errorReporter);
+    explicit Lox(std::shared_ptr<ErrorReporter> errorReporter);
 
     int runFile(char *path);
 
     void runPrompt();
 
-    void run(std::string source); // TODO can this be private
+    void run(const std::string& source); // TODO can this be private
 };

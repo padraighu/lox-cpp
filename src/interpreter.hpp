@@ -12,10 +12,10 @@ public:
     std::any visitGroupingExpr(Grouping expr) override;
     std::any visitUnaryExpr(Unary expr) override;
     std::any visitBinaryExpr(Binary expr) override;
-    void interpret(std::shared_ptr<Expr> expression);
+    void interpret(const std::shared_ptr<Expr>& expression);
 
 private:
-    std::any evaluate(std::shared_ptr<Expr> expr);
+    std::any evaluate(const std::shared_ptr<Expr>& expr);
     bool isTruthy(LiteralValue val);
     bool isEqual(LiteralValue a, LiteralValue b);
 };

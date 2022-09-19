@@ -64,7 +64,7 @@ std::any Interpreter::visitBinaryExpr(Binary expr)
     }
 }
 
-std::any Interpreter::evaluate(std::shared_ptr<Expr> expr)
+std::any Interpreter::evaluate(const std::shared_ptr<Expr>& expr)
 {
     return expr->accept(*this);
 }
@@ -85,7 +85,7 @@ bool Interpreter::isEqual(LiteralValue a, LiteralValue b)
     return false;
 }
 
-void Interpreter::interpret(std::shared_ptr<Expr> expression)
+void Interpreter::interpret(const std::shared_ptr<Expr>& expression)
 {
     auto value = std::any_cast<LiteralValue>(evaluate(expression));
     std::cout << value << std::endl;
