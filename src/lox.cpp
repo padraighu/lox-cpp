@@ -55,7 +55,7 @@ void Lox::run(const std::string& source)
 
     Scanner scanner(source, errorReporter);
     auto tokens = scanner.scanTokens();
-    Parser parser(tokens);
+    Parser parser(tokens, errorReporter);
     auto expression = parser.parse();
     AstPrinter printer;
     auto result = printer.print(expression);

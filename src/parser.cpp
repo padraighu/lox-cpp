@@ -8,9 +8,10 @@
 #include "expr.hpp"
 #include "literal.hpp"
 
-Parser::Parser(std::vector<Token> tokens)
+Parser::Parser(std::vector<Token> tokens, std::shared_ptr<ErrorReporter> errorReporter)
 {
     this->tokens = std::move(tokens);
+    this->errorReporter = std::move(errorReporter);
 }
 
 std::shared_ptr<Expr> Parser::expression()
@@ -96,14 +97,19 @@ std::shared_ptr<Expr> Parser::primary()
         return std::make_shared<Grouping>(expr);
     }
 
-    // TODO exception 
-    return nullptr;
+    throw error(peek(), "Expect expression.");
 }
 
 std::shared_ptr<Expr> Parser::parse()
 {
-    // TODO try block
-    return expression();
+    try
+    {
+        return expression();
+    }
+    catch (ParseError& pe)
+    {
+        return nullptr;
+    }
 }
 
 bool Parser::match(const std::vector<TokenType>& types)
@@ -150,6 +156,11 @@ Token Parser::consume(TokenType type, const std::string& message)
 {
     if (check(type)) return advance();
 
-    // TODO throw error etc.
-    // return nullptr;
+    throw error(peek(), message);
+}
+
+ParseError Parser::error(const Token& token, const std::string& message)
+{
+    errorReporter->error(peek(), message);
+    return ParseError(message);
 }

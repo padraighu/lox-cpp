@@ -1,6 +1,8 @@
 #include <iostream>
 #include <utility>
 #include "errorreporter.hpp"
+#include "token.hpp"
+#include "tokentype.hpp"
 
 void ErrorReporter::error(int line, const std::string& message)
 {
@@ -11,4 +13,13 @@ void ErrorReporter::report(int line, const std::string& where, const std::string
 {
     std::cerr << "[line " << line << "] Error" << where << ": " << message << std::endl;
     this->hadError = true;
+}
+
+void ErrorReporter::error(Token token, const std::string& message)
+{
+    if (token.type == TokenType::LEOF) {
+        report(token.line, " at end", message);
+    } else {
+        report(token.line, " at '" + token.lexeme + "'", message);
+    }
 }

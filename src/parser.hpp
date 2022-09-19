@@ -1,14 +1,24 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <exception>
+#include <string>
 #include "tokentype.hpp"
 #include "token.hpp"
 #include "expr.hpp"
+#include "errorreporter.hpp"
+
+class ParseError : public std::runtime_error
+{
+public:
+    explicit ParseError(const std::string &msg) : runtime_error(msg) {}
+};
 
 class Parser
 {
 private:
     std::vector<Token> tokens;
+    std::shared_ptr<ErrorReporter> errorReporter;
     int current = 0;
     std::shared_ptr<Expr> expression();
     std::shared_ptr<Expr> equality();
@@ -26,6 +36,7 @@ private:
     Token consume(TokenType type, const std::string& message);
 
 public:
-    explicit Parser(std::vector<Token> tokens);
+    explicit Parser(std::vector<Token> tokens, std::shared_ptr<ErrorReporter> errorReporter);
     std::shared_ptr<Expr> parse();
+    ParseError error(const Token& token, const std::string& message);
 };
