@@ -1,8 +1,17 @@
 #include <memory>
+#include <utility>
 #include "interpreter.hpp"
 #include "expr.hpp"
 #include "literal.hpp"
 #include "tokentype.hpp"
+#include "token.hpp"
+#include "errorreporter.hpp"
+#include "runtimeerror.hpp"
+
+Interpreter::Interpreter(std::shared_ptr<ErrorReporter> errorReporter)
+{
+    this->errorReporter = std::move(errorReporter);
+}
 
 std::any Interpreter::visitLiteralExpr(Literal expr)
 {
@@ -19,7 +28,11 @@ std::any Interpreter::visitUnaryExpr(Unary expr)
     auto right = std::any_cast<LiteralValue>(evaluate(expr.right));
     if (right.isNumber())
     {
-        if (expr.op.type == TokenType::MINUS) return LiteralValue::makeNumberLiteral(-right.getNumberValue());
+        if (expr.op.type == TokenType::MINUS)
+        {
+            checkNumberOperand(expr.op, right);
+            return LiteralValue::makeNumberLiteral(-right.getNumberValue());
+        }
     }
     if (expr.op.type == TokenType::BANG) return LiteralValue::makeBooleanLiteral(isTruthy(right));
     return nullptr;
@@ -32,10 +45,13 @@ std::any Interpreter::visitBinaryExpr(Binary expr)
     switch (expr.op.type)
     {
         case TokenType::MINUS:
+            checkNumberOperands(expr.op, left, right);
             return LiteralValue::makeNumberLiteral(left.getNumberValue() - right.getNumberValue());
         case TokenType::SLASH:
+            checkNumberOperands(expr.op, left, right);
             return LiteralValue::makeNumberLiteral(left.getNumberValue() / right.getNumberValue());
         case TokenType::STAR:
+            checkNumberOperands(expr.op, left, right);
             return LiteralValue::makeNumberLiteral(left.getNumberValue() * right.getNumberValue());
         case TokenType::PLUS:
             if (left.isNumber() && right.isNumber())
@@ -46,14 +62,18 @@ std::any Interpreter::visitBinaryExpr(Binary expr)
             {
                 return LiteralValue::makeStringLiteral(left.getStringValue() + right.getStringValue());
             }
-            break;
+            throw RuntimeError(expr.op, "Operands must be two numbers or two strings.");
         case TokenType::GREATER:
+            checkNumberOperands(expr.op, left, right);
             return LiteralValue::makeBooleanLiteral(left.getNumberValue() > right.getNumberValue());
         case TokenType::GREATER_EQUAL:
+            checkNumberOperands(expr.op, left, right);
             return LiteralValue::makeBooleanLiteral(left.getNumberValue() >= right.getNumberValue());
         case TokenType::LESS:
+            checkNumberOperands(expr.op, left, right);
             return LiteralValue::makeBooleanLiteral(left.getNumberValue() < right.getNumberValue());
         case TokenType::LESS_EQUAL:
+            checkNumberOperands(expr.op, left, right);
             return LiteralValue::makeBooleanLiteral(left.getNumberValue() <= right.getNumberValue());
         case TokenType::BANG_EQUAL:
             return LiteralValue::makeBooleanLiteral(!isEqual(left, right));
@@ -87,6 +107,24 @@ bool Interpreter::isEqual(LiteralValue a, LiteralValue b)
 
 void Interpreter::interpret(const std::shared_ptr<Expr>& expression)
 {
-    auto value = std::any_cast<LiteralValue>(evaluate(expression));
-    std::cout << value << std::endl;
+    try
+    {
+        auto value = std::any_cast<LiteralValue>(evaluate(expression));
+        std::cout << value << std::endl;
+    }
+    catch (RuntimeError& re)
+    {
+        errorReporter->runtimeError(re);
+    }
+}
+
+void Interpreter::checkNumberOperand(Token operatorTok, LiteralValue operand)
+{
+    if (!operand.isNumber()) throw RuntimeError(std::move(operatorTok), "Operand must be a number.");
+}
+
+void Interpreter::checkNumberOperands(Token operatorTok, LiteralValue left, LiteralValue right)
+{
+    if (!left.isNumber() || !right.isNumber())
+        throw RuntimeError(std::move(operatorTok), "Operands must be a numbers.");
 }

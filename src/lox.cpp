@@ -27,8 +27,8 @@ int Lox::runFile(char *path)
     buffer << loxFile.rdbuf();
     loxFile.close();
     run(buffer.str());
-    if (errorReporter->hadError)
-        return 65;
+    if (errorReporter->hadError) return 65;
+    if (errorReporter->hadRuntimeError) return 70;
     return 0;
 }
 
@@ -61,6 +61,6 @@ void Lox::run(const std::string& source)
     auto result = printer.print(expression);
     std::cout << "AstPrinter output:" << std::endl;
     std::cout << result << std::endl;
-    Interpreter interpreter;
+    Interpreter interpreter(errorReporter);
     interpreter.interpret(expression);
 }
