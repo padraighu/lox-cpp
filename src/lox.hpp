@@ -10,9 +10,9 @@ public:
 
     explicit Lox(std::shared_ptr<ErrorReporter> errorReporter);
 
-    int runFile(char *path);
+    int runFile(char *path) const;
 
-    void runPrompt();
+    void runPrompt() const;
 
-    void run(const std::string& source); // TODO can this be private
+    void run(const std::string& source) const; // TODO can this be private
 };

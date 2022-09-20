@@ -1,15 +1,12 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <string>
 #include <utility>
-#include <vector>
 #include <memory>
 #include "lox.hpp"
 #include "scanner.hpp"
 #include "errorreporter.hpp"
 #include "parser.hpp"
-#include "expr.hpp"
 #include "astprinter.hpp"
 #include "interpreter.hpp"
 
@@ -18,7 +15,7 @@ Lox::Lox(std::shared_ptr<ErrorReporter> errorReporter)
     this->errorReporter = std::move(errorReporter);
 }
 
-int Lox::runFile(char *path)
+int Lox::runFile(char *path) const
 {
     std::cout << "Running file" << path << std::endl;
     std::ifstream loxFile;
@@ -32,7 +29,7 @@ int Lox::runFile(char *path)
     return 0;
 }
 
-void Lox::runPrompt()
+void Lox::runPrompt() const
 {
     std::cout << "Running prompt" << std::endl;
     std::string line;
@@ -47,7 +44,7 @@ void Lox::runPrompt()
     }
 }
 
-void Lox::run(const std::string& source)
+void Lox::run(const std::string& source) const
 {
     std::cout << "Running the following lox:" << std::endl
               << std::endl;

@@ -22,8 +22,8 @@ public:
 private:
     std::shared_ptr<ErrorReporter> errorReporter;
     std::any evaluate(const std::shared_ptr<Expr>& expr);
-    bool isTruthy(LiteralValue val);
-    bool isEqual(LiteralValue a, LiteralValue b);
-    void checkNumberOperand(Token operatorTok, LiteralValue operand);
-    void checkNumberOperands(Token operatorTok, LiteralValue left, LiteralValue right);
+    static bool isTruthy(LiteralValue val);
+    static bool isEqual(LiteralValue a, LiteralValue b);
+    static void checkNumberOperand(Token operatorTok, LiteralValue operand);
+    static void checkNumberOperands(Token operatorTok, LiteralValue left, LiteralValue right);
 };

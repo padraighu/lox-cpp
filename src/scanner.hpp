@@ -30,10 +30,10 @@ public:
     bool match(char);
     char peek();
     void string();
-    bool isDigit(char);
+    static bool isDigit(char);
     void number();
     char peekNext();
     void identifier();
-    bool isAlpha(char);
-    bool isAlphaNumeric(char);
+    static bool isAlpha(char);
+    static bool isAlphaNumeric(char);
 };
