@@ -6,6 +6,7 @@
 #include "token.hpp"
 #include "expr.hpp"
 #include "literal.hpp"
+#include "parseerror.hpp"
 
 Parser::Parser(std::vector<Token> tokens, std::shared_ptr<ErrorReporter> errorReporter)
 {

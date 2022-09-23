@@ -7,12 +7,7 @@
 #include "token.hpp"
 #include "expr.hpp"
 #include "errorreporter.hpp"
-
-class ParseError : public std::runtime_error
-{
-public:
-    explicit ParseError(const std::string &msg) : runtime_error(msg) {}
-};
+#include "parseerror.hpp"
 
 class Parser
 {
