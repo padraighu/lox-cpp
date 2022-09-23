@@ -10,18 +10,18 @@ class LiteralValue
     LiteralValue(LiteralType, std::string);
 
 public:
-    bool isString();
-    bool isNumber();
-    bool isIdentifier();
-    bool isNull();
-    bool isBoolean();
-    std::string getStringValue();
-    double getNumberValue();
-    bool getBooleanValue();
+    bool isString() const;
+    bool isNumber() const;
+    bool isIdentifier() const;
+    bool isNull() const;
+    bool isBoolean() const;
+    std::string getStringValue() const;
+    double getNumberValue() const;
+    bool getBooleanValue() const;
     static LiteralValue makeStringLiteral(std::string);
     static LiteralValue makeNumberLiteral(double);
     static LiteralValue makeNullLiteral();
     static LiteralValue makeBooleanLiteral(bool);
 
-    friend std::ostream &operator<<(std::ostream &os, const LiteralValue &t);
+    friend std::ostream &operator<<(std::ostream &os, const LiteralValue& l);
 };

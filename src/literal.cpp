@@ -1,6 +1,7 @@
 #include <ostream>
 #include <string>
 #include <utility>
+#include <cmath>
 #include "literal.hpp"
 #include "literaltype.hpp"
 
@@ -10,46 +11,46 @@ LiteralValue::LiteralValue(LiteralType type, std::string value)
     this->value = std::move(value);
 }
 
-bool LiteralValue::isString()
+bool LiteralValue::isString() const
 {
     return type == STRING_LITERAL;
 }
 
-bool LiteralValue::isNumber()
+bool LiteralValue::isNumber() const
 {
     return type == NUMBER_LITERAL;
 }
 
-bool LiteralValue::isIdentifier()
+bool LiteralValue::isIdentifier() const
 {
     return type == IDENTIFIER_LITERAL;
 }
 
-bool LiteralValue::isNull()
+bool LiteralValue::isNull() const
 {
     return type == NULL_LITERAL;
 }
 
-bool LiteralValue::isBoolean()
+bool LiteralValue::isBoolean() const
 {
     return type == BOOLEAN_LITERAL;
 }
 
-std::string LiteralValue::getStringValue()
+std::string LiteralValue::getStringValue() const
 {
     if (isString())
         return value;
     return "ERROR";
 }
 
-double LiteralValue::getNumberValue()
+double LiteralValue::getNumberValue() const
 {
     if (isNumber())
         return std::stod(value);
     return -1.0;
 }
 
-bool LiteralValue::getBooleanValue()
+bool LiteralValue::getBooleanValue() const
 {
     if (isBoolean())
     {
@@ -80,8 +81,21 @@ LiteralValue LiteralValue::makeBooleanLiteral(bool value)
     return {BOOLEAN_LITERAL, strVal};
 }
 
-std::ostream &operator<<(std::ostream &os, const LiteralValue &l)
+std::ostream &operator<<(std::ostream &os, const LiteralValue& l)
 {
-    os << l.value;
+    if (l.isNull()) os << "nil";
+    if (l.isNumber())
+    {
+        double intpart;
+        auto val = l.getNumberValue();
+        if (std::modf(val, &intpart) == 0.0)
+        {
+            auto s = std::to_string(val);
+            auto i = s.find('.', 0);
+            os << s.substr(0, i);
+        }
+        else os << l.value;
+    }
+    else os << l.value;
     return os;
 }
