@@ -18,3 +18,10 @@ cc_test(
   srcs = ["parser_test.cpp"],
   deps = ["@com_google_googletest//:gtest_main", "//src:lox-library"],
 )
+
+cc_test(
+  name = "interpreter_test",
+  size = "small",
+  srcs = ["interpreter_test.cpp"],
+  deps = ["@com_google_googletest//:gtest_main", "//src:lox-library"],
+)

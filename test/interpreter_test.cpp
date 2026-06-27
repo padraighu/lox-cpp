@@ -1,5 +1,20 @@
-//
-// Created by Yifei Hu on 9/30/22.
-//
+#include <gtest/gtest.h>
+#include <string>
+#include "lox.hpp"
+#include "errorreporter.hpp"
 
-#include "interpreter_test.h"
+TEST(InterpreterTest, TestArithmetic)
+{
+    auto errorReporter = std::make_shared<ErrorReporter>();
+    Lox lox(errorReporter);
+    std::string testLoxStmt = "2 + 2;";
+    lox.run(testLoxStmt);
+}
+
+TEST(InterpreterTest, TestComparison)
+{
+    auto errorReporter = std::make_shared<ErrorReporter>();
+    Lox lox(errorReporter);
+    std::string testLoxStmt = "1 < 2;";
+    lox.run(testLoxStmt);
+}
