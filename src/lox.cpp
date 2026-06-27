@@ -46,18 +46,10 @@ void Lox::runPrompt() const
 
 void Lox::run(const std::string& source) const
 {
-    std::cout << "Running the following lox:" << std::endl
-              << std::endl;
-    std::cout << source << std::endl;
-
     Scanner scanner(source, errorReporter);
     auto tokens = scanner.scanTokens();
     Parser parser(tokens, errorReporter);
     auto expression = parser.parse();
-    AstPrinter printer;
-    auto result = printer.print(expression);
-    std::cout << "AstPrinter output:" << std::endl;
-    std::cout << result << std::endl;
     Interpreter interpreter(errorReporter);
     interpreter.interpret(expression);
 }
