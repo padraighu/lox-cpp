@@ -12,5 +12,5 @@ public:
     LiteralValue literal = LiteralValue::makeNullLiteral();
     int line;
     Token(TokenType, std::string, LiteralValue, int);
-    friend std::ostream &operator<<(std::ostream &os, const Token &t);
+    friend std::ostream& operator<<(std::ostream& os, const Token& t);
 };

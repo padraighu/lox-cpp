@@ -13,5 +13,5 @@ public:
     std::any visitLiteralExpr(Literal expr) override;
     std::any visitUnaryExpr(Unary expr) override;
 
-std::string parenthize(const std::string& name, const std::vector<std::shared_ptr<Expr>>& expr);
+    std::string parenthize(const std::string& name, const std::vector<std::shared_ptr<Expr>>& expr);
 };

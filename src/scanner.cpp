@@ -157,10 +157,8 @@ void Scanner::addToken(TokenType type, LiteralValue literal)
 
 bool Scanner::match(char expected)
 {
-    if (isAtEnd())
-        return false;
-    if (source.at(current) != expected)
-        return false;
+    if (isAtEnd()) return false;
+    if (source.at(current) != expected) return false;
 
     current++;
     return true;
@@ -168,8 +166,7 @@ bool Scanner::match(char expected)
 
 char Scanner::peek()
 {
-    if (isAtEnd())
-        return '\0';
+    if (isAtEnd()) return '\0';
     return source.at(current);
 }
 
@@ -177,8 +174,7 @@ void Scanner::string()
 {
     while (peek() != '"' && !isAtEnd())
     {
-        if (peek() == '\n')
-            line++;
+        if (peek() == '\n') line++;
         advance();
     }
 
@@ -225,8 +221,7 @@ void Scanner::number()
 
 char Scanner::peekNext()
 {
-    if (current + 1 >= source.length())
-        return '\0';
+    if (current + 1 >= source.length()) return '\0';
     return source.at(current + 1);
 }
 
@@ -250,9 +245,7 @@ void Scanner::identifier()
 
 bool Scanner::isAlpha(char c)
 {
-    return (c >= 'a' && c <= 'z') ||
-           (c >= 'A' && c <= 'Z') ||
-           c == '_';
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
 }
 
 bool Scanner::isAlphaNumeric(char c)

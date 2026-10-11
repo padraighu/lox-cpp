@@ -17,9 +17,12 @@ void ErrorReporter::report(int line, const std::string& where, const std::string
 
 void ErrorReporter::error(const Token& token, const std::string& message)
 {
-    if (token.type == TokenType::LEOF) {
+    if (token.type == TokenType::LEOF)
+    {
         report(token.line, " at end", message);
-    } else {
+    }
+    else
+    {
         report(token.line, " at '" + token.lexeme + "'", message);
     }
 }

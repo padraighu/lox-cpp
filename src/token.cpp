@@ -11,7 +11,7 @@ Token::Token(TokenType type, std::string lexeme, LiteralValue literal, int line)
     this->line = line;
 }
 
-std::ostream &operator<<(std::ostream &os, const Token &t)
+std::ostream& operator<<(std::ostream& os, const Token& t)
 {
     os << t.type << " '" << t.lexeme << "' " << t.literal;
     return os;

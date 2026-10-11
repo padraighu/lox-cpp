@@ -15,7 +15,8 @@ class Scanner
     int start = 0;
     int current = 0;
     int line = 1;
-    std::unordered_map<std::string, TokenType> keywords = std::unordered_map<std::string, TokenType>();
+    std::unordered_map<std::string, TokenType> keywords =
+        std::unordered_map<std::string, TokenType>();
     std::shared_ptr<ErrorReporter> errorReporter;
 
 public:

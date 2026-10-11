@@ -10,7 +10,7 @@ public:
 
     explicit Lox(std::shared_ptr<ErrorReporter> errorReporter);
 
-    int runFile(char *path) const;
+    int runFile(char* path) const;
 
     void runPrompt() const;
 

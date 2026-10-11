@@ -34,7 +34,8 @@ std::shared_ptr<Expr> Parser::equality()
 std::shared_ptr<Expr> Parser::comparison()
 {
     std::shared_ptr<Expr> expr = term();
-    while (match({TokenType::GREATER, TokenType::GREATER_EQUAL, TokenType::LESS, TokenType::LESS_EQUAL}))
+    while (match(
+        {TokenType::GREATER, TokenType::GREATER_EQUAL, TokenType::LESS, TokenType::LESS_EQUAL}))
     {
         Token op = previous();
         std::shared_ptr<Expr> right = term();
@@ -80,8 +81,10 @@ std::shared_ptr<Expr> Parser::unary()
 
 std::shared_ptr<Expr> Parser::primary()
 {
-    if (match({TokenType::FALSE})) return std::make_shared<Literal>(LiteralValue::makeBooleanLiteral(false));
-    if (match({TokenType::TRUE})) return std::make_shared<Literal>(LiteralValue::makeBooleanLiteral(true));
+    if (match({TokenType::FALSE}))
+        return std::make_shared<Literal>(LiteralValue::makeBooleanLiteral(false));
+    if (match({TokenType::TRUE}))
+        return std::make_shared<Literal>(LiteralValue::makeBooleanLiteral(true));
     if (match({TokenType::NIL})) return std::make_shared<Literal>(LiteralValue::makeNullLiteral());
 
     if (match({TokenType::NUMBER, TokenType::STRING}))
@@ -113,7 +116,7 @@ std::shared_ptr<Expr> Parser::parse()
 
 bool Parser::match(const std::vector<TokenType>& types)
 {
-    for (const auto t: types)
+    for (const auto t : types)
     {
         if (check(t))
         {

@@ -15,7 +15,7 @@ Lox::Lox(std::shared_ptr<ErrorReporter> errorReporter)
     this->errorReporter = std::move(errorReporter);
 }
 
-int Lox::runFile(char *path) const
+int Lox::runFile(char* path) const
 {
     std::cout << "Running file" << path << std::endl;
     std::ifstream loxFile;
@@ -36,8 +36,7 @@ void Lox::runPrompt() const
     while (true)
     {
         std::cout << "> ";
-        if (std::cin.eof())
-            break;
+        if (std::cin.eof()) break;
         std::getline(std::cin, line);
         run(line);
         errorReporter->hadError = false;

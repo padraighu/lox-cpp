@@ -44,43 +44,43 @@ std::any Interpreter::visitBinaryExpr(Binary expr)
     auto right = std::any_cast<LiteralValue>(evaluate(expr.right));
     switch (expr.op.type)
     {
-        case TokenType::MINUS:
-            checkNumberOperands(expr.op, left, right);
-            return LiteralValue::makeNumberLiteral(left.getNumberValue() - right.getNumberValue());
-        case TokenType::SLASH:
-            checkNumberOperands(expr.op, left, right);
-            return LiteralValue::makeNumberLiteral(left.getNumberValue() / right.getNumberValue());
-        case TokenType::STAR:
-            checkNumberOperands(expr.op, left, right);
-            return LiteralValue::makeNumberLiteral(left.getNumberValue() * right.getNumberValue());
-        case TokenType::PLUS:
-            if (left.isNumber() && right.isNumber())
-            {
-                return LiteralValue::makeNumberLiteral(left.getNumberValue() + right.getNumberValue());
-            }
-            if (left.isString() && right.isString())
-            {
-                return LiteralValue::makeStringLiteral(left.getStringValue() + right.getStringValue());
-            }
-            throw RuntimeError(expr.op, "Operands must be two numbers or two strings.");
-        case TokenType::GREATER:
-            checkNumberOperands(expr.op, left, right);
-            return LiteralValue::makeBooleanLiteral(left.getNumberValue() > right.getNumberValue());
-        case TokenType::GREATER_EQUAL:
-            checkNumberOperands(expr.op, left, right);
-            return LiteralValue::makeBooleanLiteral(left.getNumberValue() >= right.getNumberValue());
-        case TokenType::LESS:
-            checkNumberOperands(expr.op, left, right);
-            return LiteralValue::makeBooleanLiteral(left.getNumberValue() < right.getNumberValue());
-        case TokenType::LESS_EQUAL:
-            checkNumberOperands(expr.op, left, right);
-            return LiteralValue::makeBooleanLiteral(left.getNumberValue() <= right.getNumberValue());
-        case TokenType::BANG_EQUAL:
-            return LiteralValue::makeBooleanLiteral(!isEqual(left, right));
-        case TokenType::EQUAL_EQUAL:
-            return LiteralValue::makeBooleanLiteral(isEqual(left, right));
-        default:
-            return LiteralValue::makeNullLiteral();
+    case TokenType::MINUS:
+        checkNumberOperands(expr.op, left, right);
+        return LiteralValue::makeNumberLiteral(left.getNumberValue() - right.getNumberValue());
+    case TokenType::SLASH:
+        checkNumberOperands(expr.op, left, right);
+        return LiteralValue::makeNumberLiteral(left.getNumberValue() / right.getNumberValue());
+    case TokenType::STAR:
+        checkNumberOperands(expr.op, left, right);
+        return LiteralValue::makeNumberLiteral(left.getNumberValue() * right.getNumberValue());
+    case TokenType::PLUS:
+        if (left.isNumber() && right.isNumber())
+        {
+            return LiteralValue::makeNumberLiteral(left.getNumberValue() + right.getNumberValue());
+        }
+        if (left.isString() && right.isString())
+        {
+            return LiteralValue::makeStringLiteral(left.getStringValue() + right.getStringValue());
+        }
+        throw RuntimeError(expr.op, "Operands must be two numbers or two strings.");
+    case TokenType::GREATER:
+        checkNumberOperands(expr.op, left, right);
+        return LiteralValue::makeBooleanLiteral(left.getNumberValue() > right.getNumberValue());
+    case TokenType::GREATER_EQUAL:
+        checkNumberOperands(expr.op, left, right);
+        return LiteralValue::makeBooleanLiteral(left.getNumberValue() >= right.getNumberValue());
+    case TokenType::LESS:
+        checkNumberOperands(expr.op, left, right);
+        return LiteralValue::makeBooleanLiteral(left.getNumberValue() < right.getNumberValue());
+    case TokenType::LESS_EQUAL:
+        checkNumberOperands(expr.op, left, right);
+        return LiteralValue::makeBooleanLiteral(left.getNumberValue() <= right.getNumberValue());
+    case TokenType::BANG_EQUAL:
+        return LiteralValue::makeBooleanLiteral(!isEqual(left, right));
+    case TokenType::EQUAL_EQUAL:
+        return LiteralValue::makeBooleanLiteral(isEqual(left, right));
+    default:
+        return LiteralValue::makeNullLiteral();
     }
 }
 
@@ -120,7 +120,8 @@ void Interpreter::interpret(const std::shared_ptr<Expr>& expression)
 
 void Interpreter::checkNumberOperand(Token operatorTok, LiteralValue operand)
 {
-    if (!operand.isNumber()) throw RuntimeError(std::move(operatorTok), "Operand must be a number.");
+    if (!operand.isNumber())
+        throw RuntimeError(std::move(operatorTok), "Operand must be a number.");
 }
 
 void Interpreter::checkNumberOperands(Token operatorTok, LiteralValue left, LiteralValue right)

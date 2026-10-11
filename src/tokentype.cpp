@@ -1,7 +1,7 @@
 #include <ostream>
 #include "tokentype.hpp"
 
-std::ostream &operator<<(std::ostream &os, const TokenType &tt)
+std::ostream& operator<<(std::ostream& os, const TokenType& tt)
 {
     switch (tt)
     {

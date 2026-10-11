@@ -9,7 +9,7 @@ class Expr
 {
 public:
     virtual std::any accept(Visitor& visitor) = 0;
-virtual ~Expr() = default;
+    virtual ~Expr() = default;
 };
 
 class Binary : public Expr
@@ -47,11 +47,11 @@ public:
     std::any accept(Visitor& visitor);
 };
 
-class Visitor {
+class Visitor
+{
 public:
     virtual std::any visitBinaryExpr(Binary expr) = 0;
     virtual std::any visitGroupingExpr(Grouping expr) = 0;
     virtual std::any visitLiteralExpr(Literal expr) = 0;
     virtual std::any visitUnaryExpr(Unary expr) = 0;
 };
-

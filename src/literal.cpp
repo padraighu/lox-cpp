@@ -38,15 +38,13 @@ bool LiteralValue::isBoolean() const
 
 std::string LiteralValue::getStringValue() const
 {
-    if (isString())
-        return value;
+    if (isString()) return value;
     return "ERROR";
 }
 
 double LiteralValue::getNumberValue() const
 {
-    if (isNumber())
-        return std::stod(value);
+    if (isNumber()) return std::stod(value);
     return -1.0;
 }
 
@@ -81,7 +79,7 @@ LiteralValue LiteralValue::makeBooleanLiteral(bool value)
     return {BOOLEAN_LITERAL, strVal};
 }
 
-std::ostream &operator<<(std::ostream &os, const LiteralValue& l)
+std::ostream& operator<<(std::ostream& os, const LiteralValue& l)
 {
     if (l.isNull()) os << "nil";
     if (l.isNumber())
@@ -94,8 +92,10 @@ std::ostream &operator<<(std::ostream &os, const LiteralValue& l)
             auto i = s.find('.', 0);
             os << s.substr(0, i);
         }
-        else os << l.value;
+        else
+            os << l.value;
     }
-    else os << l.value;
+    else
+        os << l.value;
     return os;
 }

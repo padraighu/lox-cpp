@@ -9,9 +9,12 @@
 
 TEST(AstPrinterTest, TestBasic)
 {
-    auto left = std::make_shared<Unary>(Token(TokenType::MINUS, "-", LiteralValue::makeNullLiteral(), 1), std::make_shared<Literal>(LiteralValue::makeNumberLiteral(123.0)));
+    auto left =
+        std::make_shared<Unary>(Token(TokenType::MINUS, "-", LiteralValue::makeNullLiteral(), 1),
+                                std::make_shared<Literal>(LiteralValue::makeNumberLiteral(123.0)));
     Token op = Token(TokenType::STAR, "*", LiteralValue::makeNullLiteral(), 1);
-    auto right = std::make_shared<Grouping>(std::make_shared<Literal>(LiteralValue::makeNumberLiteral(45.67)));
+    auto right = std::make_shared<Grouping>(
+        std::make_shared<Literal>(LiteralValue::makeNumberLiteral(45.67)));
     auto expr = std::make_shared<Binary>(left, op, right);
     AstPrinter printer;
     std::string result = printer.print(expr);

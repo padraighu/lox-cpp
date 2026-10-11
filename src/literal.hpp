@@ -23,5 +23,5 @@ public:
     static LiteralValue makeNullLiteral();
     static LiteralValue makeBooleanLiteral(bool);
 
-    friend std::ostream &operator<<(std::ostream &os, const LiteralValue& l);
+    friend std::ostream& operator<<(std::ostream& os, const LiteralValue& l);
 };

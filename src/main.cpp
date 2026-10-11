@@ -3,7 +3,7 @@
 #include "lox.hpp"
 #include "errorreporter.hpp"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     auto errorReporter = std::make_shared<ErrorReporter>();
     Lox lox(errorReporter);

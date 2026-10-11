@@ -39,12 +39,13 @@ std::any AstPrinter::visitUnaryExpr(Unary expr)
     return parenthize(expr.op.lexeme, expressions);
 }
 
-
-std::string AstPrinter::parenthize(const std::string& name, const std::vector<std::shared_ptr<Expr>>& expr)
+std::string AstPrinter::parenthize(const std::string& name,
+                                   const std::vector<std::shared_ptr<Expr>>& expr)
 {
     std::string result = "(" + name;
     // https://stackoverflow.com/questions/7230621/how-can-i-iterate-over-a-packed-variadic-template-argument-list
-    for (auto const &e: expr) {
+    for (auto const& e : expr)
+    {
         result += " " + print(e);
     }
     result += ")";
