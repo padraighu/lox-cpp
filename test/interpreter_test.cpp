@@ -18,3 +18,12 @@ TEST(InterpreterTest, TestComparison)
     std::string testLoxStmt = "1 < 2;";
     lox.run(testLoxStmt);
 }
+
+TEST(InterpreterTest, TestParseErrorSkipsInterpreter)
+{
+    auto errorReporter = std::make_shared<ErrorReporter>();
+    Lox lox(errorReporter);
+    lox.run("(1 +");
+    EXPECT_TRUE(errorReporter->hadError);
+    EXPECT_FALSE(errorReporter->hadRuntimeError);
+}

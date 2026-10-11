@@ -14,7 +14,7 @@ TEST(ScannerTest, TestBasic)
     std::string testLox = "print 123;";
     Scanner scanner(testLox, errorReporter);
     auto tokens = scanner.scanTokens();
-    EXPECT_EQ(tokens.size(), 4);
+    EXPECT_EQ(tokens.size(), 4u);
     EXPECT_EQ(tokens[0].lexeme, "print");
     EXPECT_EQ(tokens[0].type, TokenType::PRINT);
     EXPECT_EQ(tokens[1].lexeme, "123");

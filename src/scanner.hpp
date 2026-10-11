@@ -12,8 +12,8 @@ class Scanner
 {
     std::string source;
     std::vector<Token> tokens = std::vector<Token>();
-    int start = 0;
-    int current = 0;
+    std::size_t start = 0;
+    std::size_t current = 0;
     int line = 1;
     std::unordered_map<std::string, TokenType> keywords =
         std::unordered_map<std::string, TokenType>();

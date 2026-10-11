@@ -1,1 +1,20 @@
-build --cxxopt="--std=c++17"
+common --enable_bzlmod
+# hedron_compile_commands still uses native py_binary/cc_binary, removed in Bazel 9.
+common --incompatible_autoload_externally=+py_binary,+cc_binary
+
+build --cxxopt=-std=c++17
+build --copt=-Wall --copt=-Wextra --copt=-Wpedantic
+# Only our code is -Werror; external deps (googletest) keep their own warnings.
+build --per_file_copt=^src/.*,^test/.*@-Werror
+
+build:debug --compilation_mode=dbg
+
+# Uses the toolchain's built-in sanitizer features (raw -fsanitize copts clash with
+# the macOS toolchain's _FORTIFY_SOURCE define).
+build:asan --compilation_mode=dbg
+build:asan --features=asan --features=ubsan
+build:asan --copt=-fno-sanitize-recover=all
+
+test --test_output=errors
+
+try-import %workspace%/user.bazelrc

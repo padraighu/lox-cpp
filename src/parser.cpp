@@ -163,6 +163,6 @@ Token Parser::consume(TokenType type, const std::string& message)
 
 ParseError Parser::error(const Token& token, const std::string& message)
 {
-    errorReporter->error(peek(), message);
+    errorReporter->error(token, message);
     return ParseError(message);
 }

@@ -1,3 +1,6 @@
+import shutil
+import subprocess
+
 # some parts are borrowed from //https://github.com/the-lambda-way/CppLox/blob/master/chapter5
 
 def define_type(base_name: str, class_name: str, field_list: list):
@@ -12,12 +15,12 @@ def define_type(base_name: str, class_name: str, field_list: list):
         if field_type in ("LiteralValue", "Token"):
             initialize_fields.append(name)
     if initialize_fields:
-        content += " : " + ",".join([f"{name}({name})" for name in initialize_fields])
+        content += " : " + ",".join([f"{name}(std::move({name}))" for name in initialize_fields])
     content += " {\n"
     for field in fields:
         name = field.split(" ")[1]
         if name not in initialize_fields:
-            content += f"    this->{name} = {name};\n"
+            content += f"    this->{name} = std::move({name});\n"
     content += "}\n"
 
     # visitor
@@ -34,6 +37,7 @@ def define_ast(output_dir: str, base_name: str, types: list):
     content = ""
     content += "#include <memory>\n"
     content += "#include <any>\n"
+    content += "#include <utility>\n"
     content += f"#include \"{base_name.lower()}.hpp\"\n\n"
 
     for type in types:
@@ -79,7 +83,7 @@ def define_ast_header(output_dir: str, base_name: str, types: list):
     content += "{\n"
     content += "public:\n"
     content += "    virtual std::any accept(Visitor& visitor) = 0;\n"
-    content += "virtual ~Expr() = default;\n"
+    content += f"    virtual ~{base_name}() = default;\n"
     content += "};\n\n"
 
     for type in types:
@@ -116,3 +120,5 @@ if __name__ == "__main__":
     ]
     define_ast_header("src", "Expr", types)
     define_ast("src", "Expr", types)
+    if shutil.which("clang-format"):
+        subprocess.run(["clang-format", "-i", "src/expr.hpp", "src/expr.cpp"], check=True)

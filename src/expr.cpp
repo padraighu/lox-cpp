@@ -16,22 +16,22 @@ std::any Binary::accept(Visitor& visitor)
 
 Grouping::Grouping(std::shared_ptr<Expr> expression)
 {
-    this->expression = expression;
+    this->expression = std::move(expression);
 }
 std::any Grouping::accept(Visitor& visitor)
 {
     return visitor.visitGroupingExpr(*this);
 }
 
-Literal::Literal(LiteralValue val) : val(val) {}
+Literal::Literal(LiteralValue val) : val(std::move(val)) {}
 std::any Literal::accept(Visitor& visitor)
 {
     return visitor.visitLiteralExpr(*this);
 }
 
-Unary::Unary(Token op, std::shared_ptr<Expr> right) : op(op)
+Unary::Unary(Token op, std::shared_ptr<Expr> right) : op(std::move(op))
 {
-    this->right = right;
+    this->right = std::move(right);
 }
 std::any Unary::accept(Visitor& visitor)
 {
