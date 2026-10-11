@@ -26,16 +26,16 @@ std::any Interpreter::visitGroupingExpr(Grouping expr)
 std::any Interpreter::visitUnaryExpr(Unary expr)
 {
     auto right = std::any_cast<LiteralValue>(evaluate(expr.right));
-    if (right.isNumber())
+    switch (expr.op.type)
     {
-        if (expr.op.type == TokenType::MINUS)
-        {
-            checkNumberOperand(expr.op, right);
-            return LiteralValue::makeNumberLiteral(-right.getNumberValue());
-        }
+    case TokenType::MINUS:
+        checkNumberOperand(expr.op, right);
+        return LiteralValue::makeNumberLiteral(-right.getNumberValue());
+    case TokenType::BANG:
+        return LiteralValue::makeBooleanLiteral(!isTruthy(right));
+    default:
+        return LiteralValue::makeNullLiteral();
     }
-    if (expr.op.type == TokenType::BANG) return LiteralValue::makeBooleanLiteral(isTruthy(right));
-    return nullptr;
 }
 
 std::any Interpreter::visitBinaryExpr(Binary expr)
@@ -98,11 +98,7 @@ bool Interpreter::isTruthy(LiteralValue val)
 
 bool Interpreter::isEqual(LiteralValue a, LiteralValue b)
 {
-    if (a.isNull() && b.isNull()) return true;
-    if (a.isNull()) return false;
-    if (a.isNumber() && b.isNumber()) return a.getNumberValue() == b.getNumberValue();
-    if (a.isString() && b.isString()) return a.getStringValue() == b.getStringValue();
-    return false;
+    return a == b;
 }
 
 void Interpreter::interpret(const std::shared_ptr<Expr>& expression)

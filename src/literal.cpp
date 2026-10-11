@@ -1,102 +1,97 @@
+#include <cstdio>
+#include <cstdlib>
 #include <ostream>
 #include <string>
 #include <utility>
-#include <cmath>
 #include "literal.hpp"
-#include "literaltype.hpp"
 
-LiteralValue::LiteralValue(LiteralType type, std::string value)
-{
-    this->type = type;
-    this->value = std::move(value);
-}
+LiteralValue::LiteralValue(decltype(value) value) : value(std::move(value)) {}
 
 bool LiteralValue::isString() const
 {
-    return type == STRING_LITERAL;
+    return std::holds_alternative<std::string>(value);
 }
 
 bool LiteralValue::isNumber() const
 {
-    return type == NUMBER_LITERAL;
-}
-
-bool LiteralValue::isIdentifier() const
-{
-    return type == IDENTIFIER_LITERAL;
+    return std::holds_alternative<double>(value);
 }
 
 bool LiteralValue::isNull() const
 {
-    return type == NULL_LITERAL;
+    return std::holds_alternative<std::monostate>(value);
 }
 
 bool LiteralValue::isBoolean() const
 {
-    return type == BOOLEAN_LITERAL;
+    return std::holds_alternative<bool>(value);
 }
 
-std::string LiteralValue::getStringValue() const
+// Callers must check the type first; these throw std::bad_variant_access otherwise.
+const std::string& LiteralValue::getStringValue() const
 {
-    if (isString()) return value;
-    return "ERROR";
+    return std::get<std::string>(value);
 }
 
 double LiteralValue::getNumberValue() const
 {
-    if (isNumber()) return std::stod(value);
-    return -1.0;
+    return std::get<double>(value);
 }
 
 bool LiteralValue::getBooleanValue() const
 {
-    if (isBoolean())
+    return std::get<bool>(value);
+}
+
+std::string LiteralValue::toString() const
+{
+    if (isNull()) return "nil";
+    if (isBoolean()) return getBooleanValue() ? "true" : "false";
+    if (isString()) return getStringValue();
+
+    // Fewest significant digits that round-trip, so 0.1 prints as "0.1" and 3.0 as "3".
+    // (std::to_chars does this directly but needs macOS 13.3+.)
+    double number = getNumberValue();
+    char buf[32];
+    for (int precision = 15; precision <= 17; precision++)
     {
-        if (value == "true") return true;
-        if (value == "false") return false;
+        std::snprintf(buf, sizeof(buf), "%.*g", precision, number);
+        if (std::strtod(buf, nullptr) == number) break;
     }
-    return false;
+    return buf;
 }
 
 LiteralValue LiteralValue::makeStringLiteral(std::string value)
 {
-    return {STRING_LITERAL, std::move(value)};
+    return LiteralValue(std::move(value));
 }
 
 LiteralValue LiteralValue::makeNumberLiteral(double value)
 {
-    return {NUMBER_LITERAL, std::to_string(value)};
+    return LiteralValue(value);
 }
 
 LiteralValue LiteralValue::makeNullLiteral()
 {
-    return {NULL_LITERAL, "NULL_LITERAL"};
+    return LiteralValue(std::monostate{});
 }
 
 LiteralValue LiteralValue::makeBooleanLiteral(bool value)
 {
-    std::string strVal = value ? "true" : "false";
-    return {BOOLEAN_LITERAL, strVal};
+    return LiteralValue(value);
+}
+
+bool LiteralValue::operator==(const LiteralValue& other) const
+{
+    return value == other.value;
+}
+
+bool LiteralValue::operator!=(const LiteralValue& other) const
+{
+    return !(*this == other);
 }
 
 std::ostream& operator<<(std::ostream& os, const LiteralValue& l)
 {
-    if (l.isNull())
-        os << "nil";
-    else if (l.isNumber())
-    {
-        double intpart;
-        auto val = l.getNumberValue();
-        if (std::modf(val, &intpart) == 0.0)
-        {
-            auto s = std::to_string(val);
-            auto i = s.find('.', 0);
-            os << s.substr(0, i);
-        }
-        else
-            os << l.value;
-    }
-    else
-        os << l.value;
-    return os;
+    return os << l.toString();
 }

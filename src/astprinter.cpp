@@ -26,11 +26,7 @@ std::any AstPrinter::visitGroupingExpr(Grouping expr)
 
 std::any AstPrinter::visitLiteralExpr(Literal expr)
 {
-    if (expr.val.isNull()) return "nil";
-    if (expr.val.isNumber()) return std::to_string(expr.val.getNumberValue());
-    if (expr.val.isString()) return expr.val.getStringValue();
-    if (expr.val.isBoolean()) return expr.val.getBooleanValue() ? "true" : "false";
-    return "Identifier TODO!!"; // TODO
+    return expr.val.toString();
 }
 
 std::any AstPrinter::visitUnaryExpr(Unary expr)
