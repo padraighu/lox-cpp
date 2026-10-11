@@ -81,8 +81,9 @@ LiteralValue LiteralValue::makeBooleanLiteral(bool value)
 
 std::ostream& operator<<(std::ostream& os, const LiteralValue& l)
 {
-    if (l.isNull()) os << "nil";
-    if (l.isNumber())
+    if (l.isNull())
+        os << "nil";
+    else if (l.isNumber())
     {
         double intpart;
         auto val = l.getNumberValue();

@@ -33,14 +33,14 @@ void Lox::runPrompt() const
 {
     std::cout << "Running prompt" << std::endl;
     std::string line;
-    while (true)
+    std::cout << "> ";
+    while (std::getline(std::cin, line))
     {
-        std::cout << "> ";
-        if (std::cin.eof()) break;
-        std::getline(std::cin, line);
         run(line);
         errorReporter->hadError = false;
+        std::cout << "> ";
     }
+    std::cout << std::endl;
 }
 
 void Lox::run(const std::string& source) const

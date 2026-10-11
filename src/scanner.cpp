@@ -188,7 +188,7 @@ void Scanner::string()
     advance();
 
     // Trim the surrounding quotes.
-    auto value = source.substr(start + 1, current - start - 1);
+    auto value = source.substr(start + 1, current - start - 2);
     auto stringLiteral = LiteralValue::makeStringLiteral(value);
     addToken(STRING, stringLiteral);
 }

@@ -22,3 +22,14 @@ TEST(ScannerTest, TestBasic)
     EXPECT_EQ(tokens[2].lexeme, ";");
     EXPECT_EQ(tokens[2].type, TokenType::SEMICOLON);
 }
+
+TEST(ScannerTest, TestStringLiteralExcludesQuotes)
+{
+    auto errorReporter = std::make_shared<ErrorReporter>();
+    Scanner scanner("\"abc\"", errorReporter);
+    auto tokens = scanner.scanTokens();
+    ASSERT_EQ(tokens.size(), 2u);
+    EXPECT_EQ(tokens[0].type, TokenType::STRING);
+    EXPECT_EQ(tokens[0].lexeme, "\"abc\"");
+    EXPECT_EQ(tokens[0].literal.getStringValue(), "abc");
+}

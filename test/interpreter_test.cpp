@@ -27,3 +27,22 @@ TEST(InterpreterTest, TestParseErrorSkipsInterpreter)
     EXPECT_TRUE(errorReporter->hadError);
     EXPECT_FALSE(errorReporter->hadRuntimeError);
 }
+
+static std::string runAndCapture(const std::string& source)
+{
+    auto errorReporter = std::make_shared<ErrorReporter>();
+    Lox lox(errorReporter);
+    testing::internal::CaptureStdout();
+    lox.run(source);
+    return testing::internal::GetCapturedStdout();
+}
+
+TEST(InterpreterTest, TestStringConcatenation)
+{
+    EXPECT_EQ(runAndCapture("\"a\" + \"b\""), "ab\n");
+}
+
+TEST(InterpreterTest, TestPrintNil)
+{
+    EXPECT_EQ(runAndCapture("nil"), "nil\n");
+}
