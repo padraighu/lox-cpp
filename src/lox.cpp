@@ -11,11 +11,11 @@
 #include "interpreter.hpp"
 
 Lox::Lox(std::shared_ptr<ErrorReporter> errorReporter)
+    : errorReporter(std::move(errorReporter)), interpreter(this->errorReporter)
 {
-    this->errorReporter = std::move(errorReporter);
 }
 
-int Lox::runFile(char* path) const
+int Lox::runFile(char* path)
 {
     std::cout << "Running file" << path << std::endl;
     std::ifstream loxFile;
@@ -29,7 +29,7 @@ int Lox::runFile(char* path) const
     return 0;
 }
 
-void Lox::runPrompt() const
+void Lox::runPrompt()
 {
     std::cout << "Running prompt" << std::endl;
     std::string line;
@@ -43,13 +43,12 @@ void Lox::runPrompt() const
     std::cout << std::endl;
 }
 
-void Lox::run(const std::string& source) const
+void Lox::run(const std::string& source)
 {
     Scanner scanner(source, errorReporter);
     auto tokens = scanner.scanTokens();
     Parser parser(tokens, errorReporter);
     auto expression = parser.parse();
     if (errorReporter->hadError) return;
-    Interpreter interpreter(errorReporter);
     interpreter.interpret(expression);
 }
